@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- 共通head読み込み -->
+<head th:replace="base :: fragHead('新規登録',~{::link},~{::script})">
+    <!-- このページ固有で読み込むCSS/JS -->
+    <link rel="stylesheet" th:href="@{/css/sign_up.css}">
+</head>
+<body>
+    <!-- 共通header読み込み -->
+    <header th:replace="base :: fragHeader(${currentLoginUsername})"></header>
+    <!-- contents -->
+    <div class="container mt-4">
+        <!-- サイトタイトル -->
+        <h1 th:text="#{heading.sign_up}"></h1>
+        <!-- 新規アカウント登録用入力フォーム -->
+        <form th:action="@{/sign_up}" method="post" th:object="${signUpUserForm}">
+            <!-- ユーザID -->
+            <div class="mb-3">
+                <label for="userId" class="form-label" th:text="#{label.userId}"></label>
+                <input type="text" class="form-control" th:field="*{userId}" th:placeholder="#{placeholder.userId}">
+                <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span>
+            </div>
+            <!-- ユーザネーム -->
+            <div class="mb-3">
+                <label for="username" class="form-label" th:text="#{label.username}"></label>
+                <input type="text" class="form-control" th:field="*{username}" th:placeholder="#{placeholder.username}">
+                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            </div>
+            <!-- パスワード -->
+            <div class="mb-3">
+                <label for="password" class="form-label" th:text="#{label.newPassword}"></label>
+                <input type="password" class="form-control" inputmode="latin" th:field="*{password}" th:placeholder="#{placeholder.newPassword}">
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+            <!-- 確認用パスワード -->
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label" th:text="#{label.confirmPassword}"></label>
+                <input type="password" class="form-control" inputmode="latin" th:field="*{confirmPassword}" th:placeholder="#{placeholder.confirmPassword}">
+                <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+            </div>
+            <!-- 電話番号 -->
+            <div class="mb-3">
+                <label for="telephone" class="form-label" th:text="#{label.telephone}"></label>
+                <input type="tel" class="form-control" th:field="*{telephone}" th:placeholder="#{placeholder.telephone}">
+                <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
+            </div>
+            <!-- 登録ボタン -->
+            <button type="submit" class="btn btn-primary btn-block btn-lg" th:text="#{btn.register}"></button>
+        </form>
+      </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- 共通head定義 -->
+<head th:fragment="fragHead(pageTitle,links,scripts)">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- 共通で読み込むCSS/JS -->
+    <!-- Bootstrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <!-- Bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+    <!-- サイトタイトルのフォーマット -->
+    <title th:text="${pageTitle} + ' | ' + #{site.title}">各ページタイトル | ToDo App</title>
+    <!-- 各ページ固有で読み込むCSS/JS -->
+    <th:block th:replace="${links} ?: _" />
+    <th:block th:replace="${scripts} ?: _" />
+</head>
+<body>
+    <!-- 共通header定義 -->
+    <header th:fragment="fragHeader(currentLoginUsername)">
+        <!-- ナビゲーションバー -->
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <div class="container-fluid">
+                <!-- サイトタイトル -->
+                <a th:href="@{/todo}" class="navbar-brand mb-0 h1" th:text="#{site.title}"></a>
+                <!-- ログインしている場合のみ表示する内容 -->
+                <div th:if="${currentLoginUsername}" style="display: flex;">
+                    <div>
+                        <!-- ログイン中のユーザー名 -->
+                        <p th:text="#{navber.greeting(${currentLoginUsername})}"></p>
+                    </div>
+                    <!-- ドロップダウンメニュー -->
+                    <div class="btn-group" id="dropdown-user-menu-parent">
+                        <!-- ドロップダウンメニュータイトル -->
+                        <button id="user-menu" class="btn btn-secondary" aria-expanded="false" th:text="#{dropdown.user_menu}"></button>
+                        <ul class="dropdown-menu mt-0" id="dropdown-user-menu-children">
+                            <!-- アカウント情報変更画面に遷移するリンク -->
+                            <li><a class="dropdown-item" th:href="@{/todo/account}" th:text="#{dropdown.account_info}"></a></li>
+                            <!-- 新規タスク作成画面に遷移するリンク -->
+                            <li><a class="dropdown-item" th:href="@{/todo/create}" th:text="#{dropdown.create_task}"></a></li>
+                            <!-- ログアウトするリンク -->
+                            <li><a class="dropdown-item" th:href="@{/logout}" th:text="#{dropdown.logout}"></a></li>
+                        </ul>
+                    </div>
+                    <div class="ms-3">
+                        <!-- ログアウトボタン -->
+                        <a class="btn btn-danger" th:href="@{/logout}" role="button" th:text="#{btn.logout}"></a></li>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+</html>

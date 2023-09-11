@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ngtk5.todoapp.mappers.UserMapper">
+<!-- 全てのユーザー情報を取得するSQL -->
+<select id="selectAll" resultType="com.ngtk5.todoapp.beans.User">
+   SELECT
+      user_id
+      , username
+      , creation_time
+      , update_time
+      , telephone
+   FROM
+      user
+</select>
+<!-- ユーザIDを元にユーザIDとパスワードを取得するSQL -->
+<select id="getLoginRequiredInfo" resultType="com.ngtk5.todoapp.forms.LoginUserForm">
+   SELECT
+      user_id,
+      password
+   FROM
+      user
+   WHERE
+      user_id = #{userId}
+</select>
+
+<!-- ユーザIDを元にユーザ情報を取得するSQL -->
+<select id="getUserAccount" resultType="com.ngtk5.todoapp.beans.User">
+   SELECT
+      user_id
+      , username
+      , creation_time
+      , update_time
+      , telephone
+   FROM
+      user
+   WHERE
+      user_id = #{userId}
+</select>
+<!-- ユーザ情報を登録するSQL -->
+<insert id="insert" parameterType="com.ngtk5.todoapp.beans.User">
+   INSERT
+   INTO  user(
+      user_id
+      , username
+      , password
+      , creation_time
+      , telephone
+   )
+   VALUES (
+      #{userId}
+      , #{username}
+      , #{password}
+      , NOW()
+      , #{telephone}
+   )
+</insert>
+<!-- ユーザIDを元にユーザ情報を更新するSQL -->
+<update id="update">
+   UPDATE
+      user
+   SET
+      username = #{username}
+      , password = #{password}
+      , update_time = NOW()
+      , telephone = #{telephone}
+   WHERE
+      user_id = #{userId}
+</update>
+<!-- ユーザIDを元にユーザ情報を削除するSQL -->
+<delete id="delete">
+   DELETE
+   FROM
+      user
+   WHERE
+      user_id = #{userId}
+</delete>
+<!-- 指定の電話番号があればそれを返すSQL -->
+<select id="findTelephone" resultType="String">
+   SELECT
+      telephone
+   FROM
+      user
+   WHERE
+      telephone = #{telephone}
+</select>
+<!-- 指定のユーザIDがあればそれを返すSQL -->
+<select id="findUserId" resultType="String">
+   SELECT
+      user_id
+   FROM
+      user
+   WHERE
+      user_id = #{userId}
+</select>
+<!-- パスワードを取得するSQL -->
+<select id="getPassword" resultType="String">
+   SELECT
+      password
+   FROM
+      user
+   WHERE
+      user_id = #{userId}
+</select>
+<!-- ユーザーネームを取得するSQL -->
+<select id="getUsername" resultType="String">
+   SELECT
+      username
+   FROM
+      user
+   WHERE
+      user_id = #{userId}
+</select>
+</mapper>

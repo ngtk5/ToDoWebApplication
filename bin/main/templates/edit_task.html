@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- 共通head読み込み -->
+<head th:replace="base :: fragHead('タスク編集',~{::link},~{::script})">
+    <!-- このページ固有で読み込むCSS/JS -->
+    <link rel="stylesheet" th:href="@{/css/edit_task.css}">
+    <script th:inline="javascript">
+        const isCompletedFlg = /*[[${taskForm.completedFlg}]]*/"isCompletedFlg";
+    </script>
+        <script th:src="@{/js/alert_message.js}"></script>
+        <script th:src="@{/js/dropdown_menu.js}"></script>
+    <script th:src="@{/js/edit_task.js}"></script>
+</head>
+<body>
+    <!-- 共通header読み込み -->
+    <header th:replace="base :: fragHeader(${currentLoginUsername})"></header>
+    <!-- contents -->
+      <div class="container mt-4">
+        <h1 th:text="#{heading.edit_task}"></h1>
+        <form method="post" th:object="${taskForm}" th:action="@{/todo/edit/} + ${taskForm.taskId}">
+            <!-- 不正にcompletedFlgを変更された場合にでるメッセージ -->
+            <span th:if="${#fields.hasErrors('completedFlg')}" th:text="#{errors.completedFlg}"></span>
+            <!-- postしたい編集可能な要素 -->
+            <div class="mb-3">
+                <!-- タイトル -->
+                <label for="title" class="form-label" th:text="#{label.title}"></label>
+                <input type="text" class="form-control"  th:field="*{title}" th:placeholder="#{placeholder.title}">
+                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+            </div>
+            <div class="mb-3">
+                <!-- 詳細 -->
+                <label for="description" class="form-label" th:text="#{label.description}"></label>
+                <textarea class="form-control" rows="3" th:field="*{description}" th:placeholder="#{placeholder.description}"></textarea>
+                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+            </div>
+            <div class="mb-3">
+                <!-- 期限 -->
+                <label class="form-label" for="deadline"  th:text="#{label.deadline}"></label>
+                <input type="date" th:field="*{deadline}">
+                <span th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}"></span>
+            </div>
+            <div class="mb-3" style="display: flex; align-items: center;">
+                <!-- 状態 -->
+                <div class="w10">
+                    <label class="form-label" for="completedFlg" th:text="#{label.status_cron}"></label><span th:text="*{completedFlg ? '完了' : '未完了'}" id="taskStatus"></span>
+                </div>
+                <div>
+                    <input type="hidden" th:field="*{completedFlg}">
+                    <!-- 状態切り替えボタン -->
+                    <button type="button" class="btn btn-primary" onclick="setIsCompletedFlg()" th:text="#{btn.switch_status}"></button>
+                </div>
+            </div>
+            <!-- 保存ボタン -->
+            <input type="submit" class="btn btn-primary" th:value="#{btn.save}">
+            <!-- 削除ボタン -->
+            <a onclick="deleteBtn(event)" class="btn btn-danger" th:href="@{/todo/delete/} + *{taskId}" th:text="#{btn.delete}"></a>
+        </form>
+    </div>
+</body>
+</html>

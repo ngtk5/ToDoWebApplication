@@ -1,0 +1,32 @@
+spring:
+    # MySQL
+    datasource:
+        url: "jdbc:mysql://localhost/todoappdb"
+        username: develop
+        password: develop
+    sql:
+        init:
+            mode: always
+            encoding: UTF-8
+    # *.propertiesを複数ファイル適用する
+    messages:
+        basename: messages, ValidationMessages
+        fallback-to-system-locale: false
+
+# log
+logging:
+    level:
+        root: info
+    file:
+        name: log/app.log
+    logback:
+        rollingpolicy:
+            max-file-size: 1MB
+
+# mybatis
+# DBでのデータ名の命名規則->キャメルケース
+# Javaでの変数名の命名規則->スネークケース
+# このズレを解消
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true

@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example # rootユーザのパスワード
+      MYSQL_DATABASE: todoappdb # データベース名
+      MYSQL_USER: develop # ユーザ名
+      MYSQL_PASSWORD: develop # パスワード
+      TZ: Asia/Tokyo  # タイムゾーン指定
+    ports:
+      - 3306:3306 # コンテナ外部からアクセスできるようにする

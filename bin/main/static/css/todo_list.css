@@ -1,0 +1,36 @@
+/* -----タスク一覧テーブル----- */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+/* テーブルの横幅を固定 */
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+/* 20%+54%+6%+8%+6%*2=100% */
+.table_title{
+    width: 20%;
+}
+
+.table_description{
+    width: 54%;
+}
+
+.table_status{
+    width: 6%;
+}
+
+.table_deadline{
+    width: 8%;
+}
+
+.table_btn{
+    width: 6%;
+}
+/* テキストが2行になる場合は省略 */
+.table_text_truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

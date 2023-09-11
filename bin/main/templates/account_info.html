@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- 共通head読み込み -->
+<head th:replace="base :: fragHead('アカウント情報',~{::link},~{::script})">
+    <!-- このページ固有で読み込むCSS/JS -->
+    <script th:src="@{/js/alert_message.js}"></script>
+    <script th:src="@{/js/dropdown_menu.js}"></script>
+    <script th:inline="javascript">
+      // Controllerから受け取ったメッセージ変数をJavaScriptで使えるようにする
+        var alertMessage = /*[[${alertMessage}]]*/ "";
+    </script>
+</head>
+<body>
+    <!-- 共通header読み込み -->
+    <header th:replace="base :: fragHeader(${currentLoginUsername})"></header>
+    <!-- アラートメッセージ -->
+    <div id="notification" class="notification" th:if="${alertMessage}"></div>
+    <!-- contents -->
+    <div class="container">
+      <!-- サイトタイトル -->
+        <h1 th:text="#{heading.account_info}"></h1>
+        <!-- アカウント情報を更新するためのフォーム -->
+        <form th:object="${userForm}" method="post" th:action="@{/todo/account/update}">
+          <div class="mb-3">
+            <!-- ユーザー名 -->
+            <label for="username" class="form-label" th:text="#{label.username}"></label>
+            <input type="text" class="form-control" th:field="*{username}" th:placeholder="#{placeholder.username}">
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+          </div>
+          <div class="mb-3">
+            <!-- 電話番号 -->
+            <label for="telephone" class="form-label" th:text="#{label.telephone}"></label>
+            <input type="tel" class="form-control" th:field="*{telephone}" th:placeholder="#{placeholder.telephone}">
+            <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
+          </div>
+          <div class="mb-3">
+            <!-- パスワード -->
+            <label for="password" class="form-label" th:text="#{label.password}"></label>
+            <input type="password" class="form-control" th:field="*{password}" th:placeholder="#{placeholder.password}">
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+          </div>
+          <!-- 保存ボタン -->
+          <input type="submit" class="btn btn-primary" th:value="#{btn.save}">
+        </form>
+      </div>
+</body>
+</html>

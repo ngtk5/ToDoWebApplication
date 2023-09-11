@@ -1,0 +1,21 @@
+/* 共通css */
+
+/* -----コンテンツ全体----- */
+body {
+    font-family: 'Zen Kurenaido', sans-serif;
+}
+
+.notification {
+    position: fixed;
+    top: 5vh;
+    right: 40vw;
+    padding: 30px 40px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: none;
+}

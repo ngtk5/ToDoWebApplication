@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ngtk5.todoapp.mappers.TaskMapper">
+<!-- 全てのタスク情報を取得するSQL -->
+<select id="selectAll" resultType="com.ngtk5.todoapp.beans.Task">
+    SELECT
+        *
+    FROM
+        task
+    ORDER BY
+        deadline
+</select>
+
+<!-- ユーザIDを条件にタスク情報を取得するSQL -->
+<!-- 期限昇順ソート -->
+<select id="selectByUserIdOrderByDeadline" resultType="com.ngtk5.todoapp.beans.Task">
+    SELECT
+        *
+    FROM
+        task
+    WHERE
+        user_id = #{userId}
+    ORDER BY
+        deadline
+</select>
+<!-- ユーザIDを条件にタスク情報を取得するSQL -->
+<!-- タイトル昇順ソート -->
+<select id="selectByUserIdOrderByTitle" resultType="com.ngtk5.todoapp.beans.Task">
+    SELECT
+        *
+    FROM
+        task
+    WHERE
+        user_id = #{userId}
+    ORDER BY
+        title
+</select>
+<!-- ユーザIDを条件にタスク情報を取得するSQL -->
+<!-- 状態昇順ソート -->
+<select id="selectByUserIdOrderByStatus" resultType="com.ngtk5.todoapp.beans.Task">
+    SELECT
+        *
+    FROM
+        task
+    WHERE
+        user_id = #{userId}
+    ORDER BY
+        completed_flg
+</select>
+<!-- ユーザIDを条件にタスク情報を取得するSQL -->
+<!-- 期限降順ソート -->
+<select id="selectByUserIdOrderByDeadlineDown" resultType="com.ngtk5.todoapp.beans.Task">
+    SELECT
+        *
+    FROM
+        task
+    WHERE
+        user_id = #{userId}
+    ORDER BY
+        deadline desc
+</select>
+<!-- ユーザIDを条件にタスク情報を取得するSQL -->
+<!-- タイトル降順ソート -->
+<select id="selectByUserIdOrderByTitleDown" resultType="com.ngtk5.todoapp.beans.Task">
+    SELECT
+        *
+    FROM
+        task
+    WHERE
+        user_id = #{userId}
+    ORDER BY
+        title desc
+</select>
+<!-- ユーザIDを条件にタスク情報を取得するSQL -->
+<!-- 状態昇順ソート -->
+<select id="selectByUserIdOrderByStatusDown" resultType="com.ngtk5.todoapp.beans.Task">
+    SELECT
+        *
+    FROM
+        task
+    WHERE
+        user_id = #{userId}
+    ORDER BY
+        completed_flg desc
+</select>
+
+<!-- タスクID,ユーザIDを条件にタスク情報を取得するSQL -->
+<select id="selectByTaskId" resultType="com.ngtk5.todoapp.beans.Task">
+    SELECT
+        *
+    FROM
+        task
+    WHERE
+        task_id = #{taskId} AND user_id = #{userId}
+</select>
+<!-- タスクID,ユーザIDを元にデータを更新するSQL -->
+<update id="update">
+    UPDATE
+        task
+    SET
+        title = #{title}
+        , description = #{description}
+        , deadline = #{deadline}
+        , completed_flg = #{completedFlg}
+        , update_time = NOW()
+    WHERE
+        task_id = #{taskId} AND user_id = #{userId}
+</update>
+<!-- ユーザID,タスクIDを元にデータを削除するSQL -->
+<delete id="delete">
+    DELETE
+    FROM
+        task
+    WHERE user_id = #{userId} AND task_id = #{taskId}
+</delete>
+<!-- ユーザIDを元に完了済みタスクのデータを削除するSQL -->
+<delete id="completedAllDelete">
+    DELETE
+    FROM
+        task
+    WHERE user_id = #{userId} AND completed_flg = true
+</delete>
+<!-- タスクIDが重複していないかチェックするSQL -->
+<select id="selectCheckTaskId" resultType="Integer">
+    SELECT
+        COUNT(*)
+    FROM
+        task
+    WHERE task_id = #{taskId}
+</select>
+<!-- 新規タスク情報を登録するSQL -->
+<insert id="insert" parameterType="com.ngtk5.todoapp.beans.Task">
+    INSERT
+    INTO task(
+        task_id
+        , user_id
+        , title
+        , description
+        , completed_flg
+        , deadline
+        , creation_time
+        , update_time
+    )
+    VALUES (
+        #{taskId}
+        , #{userId}
+        , #{title}
+        , #{description}
+        , false
+        , #{deadline}
+        , NOW()
+        , null
+    )
+</insert>
+</mapper>

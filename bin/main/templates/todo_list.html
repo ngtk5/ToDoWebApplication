@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- 共通head読み込み -->
+<head th:replace="base :: fragHead('タスク一覧',~{::link},~{::script})">
+    <!-- このページ固有で読み込むCSS/JS -->
+    <link rel="stylesheet" th:href="@{/css/todo_list.css}" />
+    <script th:src="@{/js/alert_message.js}"></script>
+    <script th:src="@{/js/dropdown_menu.js}"></script>
+    <script th:src="@{/js/todo_list.js}"></script>
+    <script th:inline="javascript">
+        // Controllerから受け取ったメッセージ変数をJavaScriptで使えるようにする
+        var alertMessage = /*[[${alertMessage}]]*/ "";
+    </script>
+</head>
+<body>
+    <!-- 共通header読み込み -->
+    <header th:replace="base :: fragHeader(${currentLoginUsername})"></header>
+    <!-- アラートメッセージ -->
+    <div id="notification" class="notification" th:if="${alertMessage}"></div>
+    <!-- contents -->
+    <div class="mt-4 ms-4 me-4">
+        <h1 th:text="#{heading.task_list}">各ページタイトル</h1>
+        <div class="mb-3 col d-flex flex-row-reverse">
+            <!-- 完了済みタスクをすべて削除するボタン -->
+            <a onclick="allDeleteBtn(event)" class="btn btn-danger" th:href="@{/todo/completed_all_delete}" th:text="#{btn.completed_all_delete}" role="button"></a>
+            <!-- 新規タスクを作成するボタン -->
+            <a class="btn btn-primary me-3" th:href="@{/todo/create}" th:text="#{btn.create_task}" role="button"></a>
+        </div>
+        <!-- ソート用ボタン -->
+        <div class="mb-3 col d-flex flex-row-reverse">
+            <!-- 期限(降順) -->
+            <a class="btn btn-primary" th:href="@{/todo/sort/deadlineDown}" role="button" th:text="#{btn.sort.deadline.down}"></a>
+            <!-- 期限(昇順) -->
+            <a class="btn btn-primary me-3" th:href="@{/todo/sort/deadlie}" role="button" th:text="#{btn.sort.deadline.up}"></a>
+            <!-- 状態(降順) -->
+            <a class="btn btn-primary me-3" th:href="@{/todo/sort/statusDown}" role="button" th:text="#{btn.sort.status.down}"></a>
+            <!-- 状態(昇順) -->
+            <a class="btn btn-primary me-3" th:href="@{/todo/sort/status}" role="button" th:text="#{btn.sort.status.up}"></a>
+            <!-- タイトル(降順) -->
+            <a class="btn btn-primary me-3" th:href="@{/todo/sort/titleDown}" role="button" th:text="#{btn.sort.title.down}"></a>
+            <!-- タイトル(昇順) -->
+            <a class="btn btn-primary me-3" th:href="@{/todo/sort/title}" role="button" th:text="#{btn.sort.title.up}"></a>
+        </div>
+        <!-- タスク一覧テーブル -->
+        <div class="table-container">
+            <table class="table table-striped" id="sort_table">
+                <thead>
+                    <tr>
+                        <!-- 項目名 -->
+                        <th scope="col" class="table_title" th:text="#{label.title}"></th>
+                        <th scope="col" class="table_description" th:text="#{label.description}"></th>
+                        <th scope="col" class="table_status" th:text="#{label.status}"></th>
+                        <th scope="col" class="table_deadline" th:text="#{label.deadline}"></th>
+                        <!-- ボタン用の外枠伸ばし -->
+                        <th scope="col" class="table_btn"></th>
+                        <th scope="col" class="table_btn"></th>
+                    </tr>
+                </thead>
+                <!-- 各タスクを1行ずつ表示 -->
+                <tbody th:each="task : ${tasks}">
+                    <tr th:object="${task}">
+                        <!-- タイトル -->
+                        <td class="table_text_truncate" th:text="*{title}" ></td>
+                        <!-- 詳細 -->
+                        <td class="table_text_truncate" th:text="*{description}" ></td>
+                        <!-- 状態 -->
+                        <td>
+                            <!-- completedFlg=true -->
+                            <span th:if="*{completedFlg}" th:text="#{label.status.true}"></span>
+                            <!-- completedFlg=false -->
+                            <span th:if="*{!completedFlg}" th:text="#{label.status.false}"></span>
+                        </td>
+                        <!-- 期限 -->
+                        <td th:text="*{deadline}" ></td>
+                        <td>
+                            <!-- 編集ボタン -->
+                            <a th:href="@{/todo/edit/} + *{taskId}" class="btn btn-primary" th:text="#{btn.edit}"></a>
+                        </td>
+                        <td>
+                            <!-- 削除ボタン -->
+                            <a onclick="deleteBtn(event)" class="btn btn-danger" th:href="@{/todo/delete/} + *{taskId}" th:text="#{btn.delete}"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
